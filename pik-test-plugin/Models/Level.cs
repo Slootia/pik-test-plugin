@@ -17,11 +17,12 @@ namespace PikTestPlugin.Models
         public List<SpatialElement> SpatialElements { get; set; }
         public List<ApartmentLayout> ApartmentLayouts { get; set; } = new List<ApartmentLayout>();
 
-        private void Initialize(List<SpatialElement> spatialElements)
+        private Level Initialize(List<SpatialElement> spatialElements)
         {
             SpatialElements = spatialElements;
-            Name = GetLevelName(spatialElements.FirstOrDefault());
-            FillAppartmentLayouts(spatialElements);
+            Name = GetLevelName(SpatialElements.FirstOrDefault());
+            FillAppartmentLayouts(SpatialElements);
+            return this;
         }
 
         private void FillAppartmentLayouts(List<SpatialElement> spatialElements)
@@ -33,7 +34,7 @@ namespace PikTestPlugin.Models
             {
                 ApartmentLayouts.Add(new ApartmentLayout(appartmentLayouts.ToList()));
             }
-            ApartmentLayouts.OrderBy(g => g.RoomsCount);
+            ApartmentLayouts = ApartmentLayouts.OrderBy(g => g.RoomsCount).ToList();
         }
 
         private string GetLevelName(SpatialElement spatialElement) => spatialElement.Level.Name;
