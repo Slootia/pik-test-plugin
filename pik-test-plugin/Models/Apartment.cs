@@ -1,6 +1,8 @@
 ﻿using Autodesk.Revit.DB;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace PikTestPlugin.Models
 {
@@ -10,24 +12,39 @@ namespace PikTestPlugin.Models
         {
             Initialize(spatialElements);
         }
+       
+        public Apartment(List<SpatialElement> spatialElements, List<Apartment> adjacentApartments) : this (spatialElements)
+        {
+            AdjacentApartments = adjacentApartments;
+        }
 
         private const string _roomPurposeParameterName = "ROM_Зона";
         private const string _roomNumberOfRoomsParameterName = "ROM_Подзона";
+        private readonly Regex _onlyDigits = new Regex(@"^\d+$");
 
-        public string Number { get; set; }
+        public int Number { get; set; }
         public string NumberOfRooms { get; set; }
         public int RoomsCount { get; set; }
         public List<SpatialElement> Rooms { get; set; } = new List<SpatialElement>();
+        public List<Apartment> AdjacentApartments { get; set; } = new List<Apartment>();
 
-        private void Initialize(List<SpatialElement> spatialElements)
+        private Apartment Initialize(List<SpatialElement> spatialElements)
         {
-            Number = GetApartmentNumber(spatialElements.FirstOrDefault());
-            NumberOfRooms = GetNumberOfRooms(spatialElements.FirstOrDefault());
-            RoomsCount = spatialElements.Count;
+            Rooms = spatialElements;
+            Number = GetApartmentNumber(Rooms.FirstOrDefault());
+            NumberOfRooms = GetNumberOfRooms(Rooms.FirstOrDefault());
+            RoomsCount = Rooms.Count;
+            return this;
         }
 
-        private string GetApartmentNumber(SpatialElement spatialElement) =>
-            spatialElement.GetParameters(_roomPurposeParameterName).FirstOrDefault().AsString();
+        private int GetApartmentNumber(SpatialElement spatialElement)
+        {
+            var roomNumber = spatialElement.GetParameters(_roomPurposeParameterName).FirstOrDefault().AsString();
+            var onlyNumbers = new String(roomNumber.Where(Char.IsDigit).ToArray());
+            int.TryParse(onlyNumbers, out int result);
+            return result;
+        }
+        
         private string GetNumberOfRooms(SpatialElement spatialElement) =>
             spatialElement.GetParameters(_roomNumberOfRoomsParameterName).FirstOrDefault().AsString();
     }

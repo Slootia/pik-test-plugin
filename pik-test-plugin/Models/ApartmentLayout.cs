@@ -19,13 +19,16 @@ namespace PikTestPlugin.Models
 
         public string NumberOfRooms { get; set; }
         public int RoomsCount { get; set; }
+        public static List<SpatialElement> SpatialElements { get; set; }
         public List<Apartment> Apartments { get; set; } = new List<Apartment>();
 
-        private void Initialize(List<SpatialElement> spatialElements)
+        private ApartmentLayout Initialize(List<SpatialElement> spatialElements)
         {
-            NumberOfRooms = GetNumberOfRooms(spatialElements.FirstOrDefault());
-            RoomsCount = spatialElements.Count;
-            FillAppartments(spatialElements);
+            SpatialElements = spatialElements;
+            NumberOfRooms = GetNumberOfRooms(SpatialElements.FirstOrDefault());
+            RoomsCount = SpatialElements.Count;
+            FillAppartments(SpatialElements);
+            return this;
         }
 
         private void FillAppartments(List<SpatialElement> spatialElements)
@@ -37,6 +40,52 @@ namespace PikTestPlugin.Models
             {
                 Apartments.Add(new Apartment(apartments.ToList()));
             }
+
+            Apartments = Apartments.OrderBy(g => g.Number).ToList();
+
+            foreach (var apartment in Apartments)
+            {
+                apartment.AdjacentApartments = FindAdjacentApartments(apartment);
+            }
+        }
+
+        private List<Apartment> FindAdjacentApartments(Apartment apartment)
+        {
+            var adjacentApartments = new List<Apartment>();
+
+            for (int i = 0; i < Apartments.Count; i++)
+            {
+                var currentApartment = apartment;
+                Apartment comparableApartment;
+                
+                if (i + 1 >= Apartments.Count)
+                {
+                    comparableApartment = Apartments[0];
+                }
+                else
+                {
+                    comparableApartment = Apartments[i + 1];
+                }
+
+
+
+                if (IsApartmentsAdjacent(currentApartment, comparableApartment))
+                {
+                    adjacentApartments.Add(comparableApartment);
+                }
+            }
+
+            return adjacentApartments;
+        }
+
+        private bool IsApartmentsAdjacent(Apartment firstApartment, Apartment secondApartment)
+        {
+            var difference = firstApartment.Number - secondApartment.Number;
+            if (difference == 1 || difference == -1)
+            {
+                return true;
+            }
+            return false;
         }
 
         private string GetNumberOfRooms(SpatialElement spatialElement) =>

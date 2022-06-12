@@ -22,8 +22,9 @@ namespace PikTestPlugin
 
                 var rooms = GetSpatialElementsByParameterAndPurpose(spatialElementsFromModel, "ROM_Зона", "Квартира");
 
-                ApartmentComplex.Initialize(rooms);
-                var sections = ApartmentComplex.Sections;
+                var apartmentComplex = new ApartmentComplex().Initialize(rooms);
+                var sections = apartmentComplex.Sections;
+
 
             }
             catch (Exception e)

@@ -15,11 +15,12 @@ namespace PikTestPlugin.Models
         public List<SpatialElement> SpatialElements { get; set; }
         public List<Level> Levels { get; set; } = new List<Level>();
 
-        private void Initialize(List<SpatialElement> spatialElements)
+        private Section Initialize(List<SpatialElement> spatialElements)
         {
             SpatialElements = spatialElements;
-            Number = GetSectionNumber(spatialElements.FirstOrDefault());
-            FillLevels(spatialElements);
+            Number = GetSectionNumber(SpatialElements.FirstOrDefault());
+            FillLevels(SpatialElements);
+            return this;
         }
 
 
