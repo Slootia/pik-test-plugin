@@ -1,10 +1,11 @@
 ﻿using Autodesk.Revit.DB;
+using PikTestPlugin.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace PikTestPlugin.Models
 {
-    internal sealed class ApartmentComplex
+    internal sealed class ApartmentComplex : IApartmentComplex
     {
         public List<Section> Sections { get; set; } = new List<Section>();
         public List<SpatialElement> SpatialElements { get; set; }

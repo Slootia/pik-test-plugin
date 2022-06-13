@@ -1,6 +1,6 @@
 ﻿using PikTestPlugin.Models;
 
-namespace PikTestPlugin
+namespace PikTestPlugin.Interfaces
 {
     internal interface IPainter
     {

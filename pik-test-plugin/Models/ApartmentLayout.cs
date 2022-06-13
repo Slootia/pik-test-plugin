@@ -1,10 +1,11 @@
 ﻿using Autodesk.Revit.DB;
+using PikTestPlugin.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace PikTestPlugin.Models
 {
-    internal sealed class ApartmentLayout
+    internal sealed class ApartmentLayout : IApartmentLayout
     {
         public ApartmentLayout(List<SpatialElement> spatialElements)
         {
@@ -13,7 +14,7 @@ namespace PikTestPlugin.Models
 
         public string NumberOfRooms { get; set; }
         public int RoomsCount { get; set; }
-        public static List<SpatialElement> SpatialElements { get; set; }
+        public List<SpatialElement> SpatialElements { get; set; }
         public List<Apartment> Apartments { get; set; } = new List<Apartment>();
 
         private ApartmentLayout Initialize(List<SpatialElement> spatialElements)

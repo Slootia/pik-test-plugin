@@ -1,10 +1,11 @@
 ﻿using Autodesk.Revit.DB;
+using PikTestPlugin.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace PikTestPlugin.Models
 {
-    internal sealed class Level
+    internal sealed class Level : ILevel
     {
         public Level(List<SpatialElement> spatialElements)
         {
