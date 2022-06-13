@@ -1,4 +1,4 @@
-﻿namespace PikTestPlugin
+﻿namespace PikTestPlugin.Models
 {
     public static class ParametersNames
     {
