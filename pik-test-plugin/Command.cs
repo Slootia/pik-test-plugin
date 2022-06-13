@@ -3,8 +3,6 @@ using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using PikTestPlugin.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace PikTestPlugin
 {
@@ -15,17 +13,9 @@ namespace PikTestPlugin
         {
             try
             {
-                RevitStaticData.Document = commandData.Application.ActiveUIDocument.Document;
-
-                var spatialElementsFromModel =
-                    new FilteredElementCollector(RevitStaticData.Document).OfClass(typeof(SpatialElement)).Cast<SpatialElement>().ToList();
-
-                var rooms = GetSpatialElementsByParameterAndPurpose(spatialElementsFromModel, "ROM_Зона", "Квартира");
-
-                var apartmentComplex = new ApartmentComplex().Initialize(rooms);
-                var sections = apartmentComplex.Sections;
-
-
+                RevitStaticData.Initialize(commandData.Application);
+                Painter painter = new Painter();
+                painter.PaintAdjacent(new ApartmentComplex().Initialize(RevitStaticData.FilteredSpatialElements));
             }
             catch (Exception e)
             {
@@ -34,12 +24,6 @@ namespace PikTestPlugin
             }
 
             return Result.Succeeded;
-        }
-
-        private static List<SpatialElement> GetSpatialElementsByParameterAndPurpose(List<SpatialElement> spatialElements, string parameterName, string purpose)
-        {
-            return spatialElements
-                .Where(s => s.GetParameters(parameterName).ToList().Any(p => p.AsString().Contains(purpose))).ToList();
         }
     }
 }

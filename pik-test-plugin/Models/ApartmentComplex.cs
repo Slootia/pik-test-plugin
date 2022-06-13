@@ -4,11 +4,12 @@ using System.Linq;
 
 namespace PikTestPlugin.Models
 {
-    internal class ApartmentComplex
+    internal sealed class ApartmentComplex
     {
 
         private const string _apartmentParameterName = "ROM_Зона";
         private const string _apartmentPurposeParameterName = "Квартира";
+        private const string _sectionParameterName = "BS_Блок";
 
         public List<Section> Sections { get; set; } = new List<Section>();
         public List<SpatialElement> SpatialElements { get; set; }
@@ -30,7 +31,7 @@ namespace PikTestPlugin.Models
         private void FillSections(List<SpatialElement> spatialElements)
         {
             var roomsBySections = spatialElements
-                .GroupBy(r => r.GetParameters("BS_Блок").FirstOrDefault().AsString()).OrderBy(g => g.Key);
+                .GroupBy(r => r.GetParameters(_sectionParameterName).FirstOrDefault().AsString()).OrderBy(g => g.Key);
 
             foreach (var sectionRooms in roomsBySections)
             {
