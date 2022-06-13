@@ -1,13 +1,10 @@
 ﻿using Autodesk.Revit.DB;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PikTestPlugin.Models
 {
-    internal class ApartmentLayout
+    internal sealed class ApartmentLayout
     {
         public ApartmentLayout(List<SpatialElement> spatialElements)
         {
@@ -35,7 +32,7 @@ namespace PikTestPlugin.Models
         {
             var appartmentsGroup = spatialElements
                 .GroupBy(a => a.GetParameters(_roomPurposeParameterName).FirstOrDefault().AsString());
-            
+
             foreach (var apartments in appartmentsGroup)
             {
                 Apartments.Add(new Apartment(apartments.ToList()));
@@ -57,7 +54,7 @@ namespace PikTestPlugin.Models
             {
                 var currentApartment = apartment;
                 Apartment comparableApartment;
-                
+
                 if (i + 1 >= Apartments.Count)
                 {
                     comparableApartment = Apartments[0];
@@ -66,8 +63,6 @@ namespace PikTestPlugin.Models
                 {
                     comparableApartment = Apartments[i + 1];
                 }
-
-
 
                 if (IsApartmentsAdjacent(currentApartment, comparableApartment))
                 {

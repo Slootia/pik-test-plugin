@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace PikTestPlugin.Models
 {
@@ -12,21 +11,21 @@ namespace PikTestPlugin.Models
         {
             Initialize(spatialElements);
         }
-       
-        public Apartment(List<SpatialElement> spatialElements, List<Apartment> adjacentApartments) : this (spatialElements)
+
+        public Apartment(List<SpatialElement> spatialElements, List<Apartment> adjacentApartments) : this(spatialElements)
         {
             AdjacentApartments = adjacentApartments;
         }
 
         private const string _roomPurposeParameterName = "ROM_Зона";
         private const string _roomNumberOfRoomsParameterName = "ROM_Подзона";
-        private readonly Regex _onlyDigits = new Regex(@"^\d+$");
 
         public int Number { get; set; }
         public string NumberOfRooms { get; set; }
         public int RoomsCount { get; set; }
+        public bool IsPainted { get; set; } = false;
         public List<SpatialElement> Rooms { get; set; } = new List<SpatialElement>();
-        public List<Apartment> AdjacentApartments { get; set; } = new List<Apartment>();
+        public List<Apartment> AdjacentApartments { get; set; }
 
         private Apartment Initialize(List<SpatialElement> spatialElements)
         {
@@ -44,7 +43,7 @@ namespace PikTestPlugin.Models
             int.TryParse(onlyNumbers, out int result);
             return result;
         }
-        
+
         private string GetNumberOfRooms(SpatialElement spatialElement) =>
             spatialElement.GetParameters(_roomNumberOfRoomsParameterName).FirstOrDefault().AsString();
     }
