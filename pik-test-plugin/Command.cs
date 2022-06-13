@@ -2,6 +2,7 @@
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using PikTestPlugin.Models;
+using PikTestPlugin.Views;
 using System;
 
 namespace PikTestPlugin
@@ -20,6 +21,8 @@ namespace PikTestPlugin
             catch (Exception e)
             {
                 Console.WriteLine(e);
+                ErrorWindow errorWindow = new ErrorWindow(new ErrorModel(e.Message));
+                errorWindow.Show();
                 return Result.Failed;
             }
 
