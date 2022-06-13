@@ -11,8 +11,6 @@ namespace PikTestPlugin.Models
             Initialize(spatialElements);
         }
 
-        private const string _sectionParameterName = "BS_Блок";
-
         public string Number { get; set; }
         public List<SpatialElement> SpatialElements { get; set; }
         public List<Level> Levels { get; set; } = new List<Level>();
@@ -37,6 +35,6 @@ namespace PikTestPlugin.Models
         }
 
         private string GetSectionNumber(SpatialElement spatialElement) =>
-            spatialElement.GetParameters(_sectionParameterName).FirstOrDefault().AsString();
+            spatialElement.GetParameters(ParametersNames.SectionParameterName).FirstOrDefault().AsString();
     }
 }

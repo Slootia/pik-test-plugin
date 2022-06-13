@@ -11,9 +11,6 @@ namespace PikTestPlugin.Models
             Initialize(spatialElements);
         }
 
-        private const string _roomPurposeParameterName = "ROM_Зона";
-        private const string _roomNumberOfRoomsParameterName = "ROM_Подзона";
-
         public string NumberOfRooms { get; set; }
         public int RoomsCount { get; set; }
         public static List<SpatialElement> SpatialElements { get; set; }
@@ -31,7 +28,7 @@ namespace PikTestPlugin.Models
         private void FillAppartments(List<SpatialElement> spatialElements)
         {
             var appartmentsGroup = spatialElements
-                .GroupBy(a => a.GetParameters(_roomPurposeParameterName).FirstOrDefault().AsString());
+                .GroupBy(a => a.GetParameters(ParametersNames.ApartmentParameterName).FirstOrDefault().AsString());
 
             foreach (var apartments in appartmentsGroup)
             {
@@ -84,6 +81,6 @@ namespace PikTestPlugin.Models
         }
 
         private string GetNumberOfRooms(SpatialElement spatialElement) =>
-            spatialElement.GetParameters(_roomNumberOfRoomsParameterName).FirstOrDefault().AsString();
+            spatialElement.GetParameters(ParametersNames.RoomNumberOfRoomsParameterName).FirstOrDefault().AsString();
     }
 }

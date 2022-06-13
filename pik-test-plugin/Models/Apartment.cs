@@ -16,10 +16,7 @@ namespace PikTestPlugin.Models
         {
             AdjacentApartments = adjacentApartments;
         }
-
-        private const string _roomPurposeParameterName = "ROM_Зона";
-        private const string _roomNumberOfRoomsParameterName = "ROM_Подзона";
-
+        
         public int Number { get; set; }
         public string NumberOfRooms { get; set; }
         public int RoomsCount { get; set; }
@@ -38,13 +35,13 @@ namespace PikTestPlugin.Models
 
         private int GetApartmentNumber(SpatialElement spatialElement)
         {
-            var roomNumber = spatialElement.GetParameters(_roomPurposeParameterName).FirstOrDefault().AsString();
+            var roomNumber = spatialElement.GetParameters(ParametersNames.ApartmentParameterName).FirstOrDefault().AsString();
             var onlyNumbers = new String(roomNumber.Where(Char.IsDigit).ToArray());
             int.TryParse(onlyNumbers, out int result);
             return result;
         }
 
         private string GetNumberOfRooms(SpatialElement spatialElement) =>
-            spatialElement.GetParameters(_roomNumberOfRoomsParameterName).FirstOrDefault().AsString();
+            spatialElement.GetParameters(ParametersNames.RoomNumberOfRoomsParameterName).FirstOrDefault().AsString();
     }
 }

@@ -6,18 +6,13 @@ namespace PikTestPlugin.Models
 {
     internal sealed class ApartmentComplex
     {
-
-        private const string _apartmentParameterName = "ROM_Зона";
-        private const string _apartmentPurposeParameterName = "Квартира";
-        private const string _sectionParameterName = "BS_Блок";
-
         public List<Section> Sections { get; set; } = new List<Section>();
         public List<SpatialElement> SpatialElements { get; set; }
 
         public ApartmentComplex Initialize(List<SpatialElement> spatialElements)
         {
             SpatialElements = spatialElements;
-            FillSections(GetSpatialElementsByParameterAndPurpose(spatialElements, _apartmentParameterName, _apartmentPurposeParameterName));
+            FillSections(GetSpatialElementsByParameterAndPurpose(spatialElements, ParametersNames.ApartmentParameterName, ParametersNames.ApartmentPurposeParameterName));
             return this;
         }
 
@@ -31,7 +26,7 @@ namespace PikTestPlugin.Models
         private void FillSections(List<SpatialElement> spatialElements)
         {
             var roomsBySections = spatialElements
-                .GroupBy(r => r.GetParameters(_sectionParameterName).FirstOrDefault().AsString()).OrderBy(g => g.Key);
+                .GroupBy(r => r.GetParameters(ParametersNames.SectionParameterName).FirstOrDefault().AsString()).OrderBy(g => g.Key);
 
             foreach (var sectionRooms in roomsBySections)
             {
