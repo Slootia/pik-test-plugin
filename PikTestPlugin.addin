@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RevitAddIns>
+  <AddIn Type="Command">
+    <Assembly>*PUT PATH TO LIB HERE*\PikTestPlugin.dll</Assembly>
+    <ClientId>cd5e7617-7715-4f97-8b84-bd08f45c964e</ClientId>
+    <FullClassName>PikTestPlugin.Command</FullClassName>
+    <Text>PKTestPlugin</Text>
+    <Description>TestPlugin</Description>
+    <VisibilityMode>AlwaysVisible</VisibilityMode>
+    <VendorId>TEST</VendorId>
+    <VendorDescription>TEST</VendorDescription>
+  </AddIn>
+</RevitAddIns>
