@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace PikTestPlugin.Models
 {
-    internal sealed class Section : ISection
+    internal sealed class Section : ISection, IPaintable
     {
         public Section(List<SpatialElement> spatialElements)
         {
@@ -13,6 +13,7 @@ namespace PikTestPlugin.Models
         }
 
         public string Number { get; set; }
+        public bool IsPainted { get; private set; } = false;
         public List<SpatialElement> SpatialElements { get; set; }
         public List<Level> Levels { get; set; } = new List<Level>();
 
@@ -37,5 +38,28 @@ namespace PikTestPlugin.Models
 
         private string GetSectionNumber(SpatialElement spatialElement) =>
             spatialElement.GetParameters(ParametersNames.SectionParameterName).FirstOrDefault().AsString();
+
+        public void Paint()
+        {
+            if (PluginTransaction.IsStarted)
+            {
+                foreach (var level in Levels)
+                {
+                    level.Paint();
+                }
+            }
+            else
+            {
+                using (PluginTransaction.RevitTransaction)
+                {
+                    PluginTransaction.Start();
+                    foreach (var level in Levels)
+                    {
+                        level.Paint();
+                    }
+                    PluginTransaction.Commit();
+                }
+            }
+        }
     }
 }
