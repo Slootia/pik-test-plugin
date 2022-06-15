@@ -9,6 +9,5 @@ namespace PikTestPlugin.Interfaces
         string NumberOfRooms { get; set; }
         int RoomsCount { get; set; }
         List<Apartment> Apartments { get; set; }
-        List<SpatialElement> SpatialElements { get; set; }
     }
 }

@@ -6,7 +6,6 @@ namespace PikTestPlugin.Interfaces
     internal interface ISection
     {
         string Number { get; set; }
-        List<SpatialElement> SpatialElements { get; set; }
         List<Models.Level> Levels { get; set; }
     }
 }

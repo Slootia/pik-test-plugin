@@ -5,8 +5,9 @@ using System.Linq;
 
 namespace PikTestPlugin.Models
 {
-    internal sealed class ApartmentComplex : IApartmentComplex
+    internal sealed class ApartmentComplex : IApartmentComplex, IPaintable
     {
+        public bool IsPainted { get; private set; } = false;
         public List<Section> Sections { get; set; } = new List<Section>();
         public List<SpatialElement> SpatialElements { get; set; }
 
@@ -33,6 +34,30 @@ namespace PikTestPlugin.Models
             {
                 Sections.Add(new Section(sectionRooms.ToList()));
             }
+        }
+
+        public void Paint()
+        {
+            if (PluginTransaction.IsStarted)
+            {
+                foreach (var section in Sections)
+                {
+                    section.Paint();
+                }
+            }
+            else
+            {
+                using (PluginTransaction.RevitTransaction)
+                {
+                    PluginTransaction.Start();
+                    foreach (var section in Sections)
+                    {
+                        section.Paint();
+                    }
+                    PluginTransaction.Commit();
+                }
+            }
+            IsPainted = true;
         }
     }
 }
