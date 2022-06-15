@@ -16,7 +16,7 @@ namespace PikTestPlugin
             {
                 RevitStaticData.Initialize(commandData.Application);
                 Painter painter = new Painter();
-                painter.PaintAdjacent(new ApartmentComplex().Initialize(RevitStaticData.FilteredSpatialElements));
+                painter.Paint(new ApartmentComplex().Initialize(RevitStaticData.FilteredSpatialElements));
             }
             catch (Exception e)
             {

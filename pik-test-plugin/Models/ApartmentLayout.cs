@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace PikTestPlugin.Models
 {
-    internal sealed class ApartmentLayout : IApartmentLayout
+    internal sealed class ApartmentLayout : IApartmentLayout, IPaintable
     {
         public ApartmentLayout(List<SpatialElement> spatialElements)
         {
@@ -14,6 +14,7 @@ namespace PikTestPlugin.Models
 
         public string NumberOfRooms { get; set; }
         public int RoomsCount { get; set; }
+        public bool IsPainted { get; private set; } = false;
         public List<SpatialElement> SpatialElements { get; set; }
         public List<Apartment> Apartments { get; set; } = new List<Apartment>();
 
@@ -83,5 +84,29 @@ namespace PikTestPlugin.Models
 
         private string GetNumberOfRooms(SpatialElement spatialElement) =>
             spatialElement.GetParameters(ParametersNames.RoomNumberOfRoomsParameterName).FirstOrDefault().AsString();
+
+        public void Paint()
+        {
+            if (PluginTransaction.IsStarted)
+            {
+                foreach (var apartment in Apartments)
+                {
+                    apartment.Paint();
+                }
+            }
+            else
+            {
+                using (PluginTransaction.RevitTransaction)
+                {
+                    PluginTransaction.Start();
+                    foreach (var apartment in Apartments)
+                    {
+                        apartment.Paint();
+                    }
+                    PluginTransaction.Commit();
+                }
+            }
+            IsPainted = true;
+        }
     }
 }
